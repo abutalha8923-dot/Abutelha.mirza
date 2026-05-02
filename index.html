@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abu Telha | Ultimate Bio</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+body{
+  height:100vh;display:flex;justify-content:center;align-items:center;
+  background:#0f2027;color:#fff;overflow:hidden;
+}
+
+canvas{
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:100%;
+  z-index:0;
+}
+
+.container{
+  position:relative;
+  z-index:2;
+  width:340px;
+  padding:30px;
+  border-radius:25px;
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(25px);
+  border:1px solid rgba(255,255,255,0.2);
+  box-shadow:0 10px 50px rgba(0,0,0,.6);
+  text-align:center;
+}
+
+.profile img{
+  width:110px;height:110px;border-radius:50%;
+  border:3px solid rgba(255,255,255,.4);
+  margin-bottom:10px;
+}
+
+.link{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin:12px 0;padding:14px;border-radius:35px;
+  text-decoration:none;color:#fff;font-weight:500;
+  transition:0.3s;
+}
+
+.link:hover{transform:scale(1.1);} 
+
+.insta{background:linear-gradient(45deg,#feda75,#d62976,#962fbf,#4f5bd5);}    
+.fb{background:#1877f2;}    
+.tw{background:#000;}    
+.tg{background:#0088cc;}    
+.snap{background:#fffc00;color:#000;font-weight:600;}    
+
+footer{margin-top:15px;font-size:12px;opacity:.6;}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="container">
+  <div class="profile">
+    <img src="/mnt/data/file_00000000dc50720882c921ba2ba8ea42">
+    <h2>Abu Telha</h2>
+  </div>
+
+  <a href="https://www.instagram.com/abutalha.mirza" class="link insta"><i class="fab fa-instagram"></i> Instagram</a>
+  <a href="https://www.facebook.com/share/14eVgb9GC4w/" class="link fb"><i class="fab fa-facebook"></i> Facebook</a>
+  <a href="https://x.com/Abutalhami83690" class="link tw"><i class="fab fa-x-twitter"></i> Twitter</a>
+  <a href="https://t.me/Abutalhamirza" class="link tg"><i class="fab fa-telegram"></i> Telegram</a>
+  <a href="https://www.snapchat.com/add/abutalha_mi2020" class="link snap"><i class="fab fa-snapchat"></i> Snapchat</a>
+
+  <footer>🔥 Ultimate Interactive Bio</footer>
+</div>
+
+<script>
+const canvas=document.getElementById('bg');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let mouse={x:null,y:null};
+
+document.addEventListener('mousemove',e=>{
+  mouse.x=e.clientX;
+  mouse.y=e.clientY;
+});
+
+let particles=[];
+for(let i=0;i<100;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    dx:(Math.random()-0.5)*1.5,
+    dy:(Math.random()-0.5)*1.5
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  particles.forEach(p=>{
+    p.x+=p.dx;
+    p.y+=p.dy;
+
+    if(p.x<0||p.x>canvas.width) p.dx*=-1;
+    if(p.y<0||p.y>canvas.height) p.dy*=-1;
+
+    // mouse interaction
+    let dx=mouse.x-p.x;
+    let dy=mouse.y-p.y;
+    let dist=Math.sqrt(dx*dx+dy*dy);
+
+    if(dist<120){
+      p.x -= dx*0.02;
+      p.y -= dy*0.02;
+    }
+
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,2,0,Math.PI*2);
+    ctx.fillStyle='cyan';
+    ctx.fill();
+  });
+
+  for(let i=0;i<particles.length;i++){
+    for(let j=i;j<particles.length;j++){
+      let dx=particles[i].x-particles[j].x;
+      let dy=particles[i].y-particles[j].y;
+      let dist=Math.sqrt(dx*dx+dy*dy);
+
+      if(dist<100){
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x,particles[i].y);
+        ctx.lineTo(particles[j].x,particles[j].y);
+        ctx.strokeStyle='rgba(0,255,255,0.2)';
+        ctx.stroke();
+      }
+    }
+  }
+
+  requestAnimationFrame(draw);
+}
+
+draw();
+
+window.addEventListener('resize',()=>{
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+});
+</script>
+
+</body>
+</html>
